@@ -1,0 +1,10 @@
+<template name="recent">
+{{#if groups}}
+	<h1>Recent Groups</h1>
+	<ul class="groups">
+	{{#each groups}}
+		<li><a href="/g/{{name}}">{{name}}</a></li>
+	{{/each}}
+	</ul>
+{{/if}}
+</template>

@@ -23,17 +23,11 @@ Router.map(() ->
   })
 
   @route('add-kid', {
-    path: '/kids/new',
-    template: 'add_kid'
-  })
-
-  @route('transactions', {
-    path: '/kids/:_id',
-    template: 'details',
+    path: '/g/:_name',
+    template: 'group_detail',
     data: () ->
-      console.log("param", @params._id)
-      console.log("kid", Children.findOne(@params._id))
-      #{ kid: Children.findOne(@params._id) }
+      console.log("param", @params._name)
+      { group: Groups.findOne({name: @params._name}) }
   })
 
 )
