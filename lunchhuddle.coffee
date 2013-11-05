@@ -5,29 +5,23 @@ Router.configure({
 Router.map(() ->
   @route('home', {
     path: '/',
-    template: 'home'
-    ###
+    template: 'home',
+    before: () ->
+      this.subscribe('myRooms').wait()
     data: () ->
-      kids = Children.find().fetch()
-      transactions = Transactions.find({
-        kidId: {$in: _.pluck(kids, '_id')}
-      }).fetch()
-      _.each(transactions, (t) ->
-        t.which = _.find(kids, (k) -> k._id == t.kidId)
-      )
-      { 
-        kids: kids, 
-        transactions: transactions
-      }
-      ###
+      {recent: Groups.recent().fetch()}
   })
 
-  @route('add-kid', {
-    path: '/g/:_name',
+  @route('detail', {
+    path: '/g/:_slug',
+    load: () -> 
+      Session.set("slug", @params._slug)
+    before: () ->
+      this.subscribe('selectedRoom', Session.get('slug'))
     template: 'group_detail',
     data: () ->
-      console.log("param", @params._name)
-      { group: Groups.findOne({name: @params._name}) }
+      console.log("param", @params._slug)
+      { group: Groups.findOne({slug: @params._slug}) }
   })
 
 )

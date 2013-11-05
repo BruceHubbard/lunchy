@@ -4,8 +4,6 @@
 # but you can also edit it by hand.
 
 standard-app-packages
-autopublish
-insecure
 preserve-inputs
 iron-router
 coffeescript
@@ -13,3 +11,4 @@ bootstrap-3
 accounts-ui
 accounts-twitter
 accounts-password
+urlify2

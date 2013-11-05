@@ -1,8 +1,8 @@
 <template name="recent">
-{{#if groups}}
+{{#if recent}}
 	<h1>Recent Groups</h1>
 	<ul class="groups">
-	{{#each groups}}
+	{{#each recent}}
 		<li><a href="/g/{{name}}">{{name}}</a></li>
 	{{/each}}
 	</ul>
