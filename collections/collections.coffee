@@ -13,7 +13,7 @@ if(Meteor.isServer)
 		g = Groups.findOne({slug: slug})
 		now = new Date()
 		cutoff = new Date()
-		cutoff.setHours(cutoff.getHours() - 6)
+		cutoff.setHours(cutoff.getHours() - 5)
 
 		Votes.find({group: g._id, voted: {$gte: cutoff}})
 	)
