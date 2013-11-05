@@ -18,10 +18,13 @@ Router.map(() ->
       Session.set("slug", @params._slug)
     before: () ->
       this.subscribe('selectedRoom', Session.get('slug'))
+      this.subscribe('votes', Session.get('slug'))
     template: 'group_detail',
     data: () ->
-      console.log("param", @params._slug)
-      { group: Groups.findOne({slug: @params._slug}) }
+      { 
+        group: Groups.findOne({slug: @params._slug}),
+        votes: Votes.find().fetch()
+      }
   })
 
 )

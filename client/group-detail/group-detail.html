@@ -1,3 +1,18 @@
 <template name="group_detail">
-	<h1>{{group.name}}</h1>
+	<div class="ballot col-md-3">
+		<h2>I Vote For:</h2>
+		<form>
+			<label>Restaurant:</label>
+			<input class="restaurant"/>
+			<input type="submit" value="VOTE"/>
+		</form>
+
+		<h2>Recent Votes</h2>
+	</div>
+	<div class="votes col-md-9">
+		<ul>
+		{{#each votes}}
+			<li>{{restaurant}} - {{name}}</li>
+		{{/each}}
+		</ul>
 </template>
