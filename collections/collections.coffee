@@ -10,6 +10,22 @@ if(Meteor.isServer)
 	Meteor.publish("selectedRoom", (slug) ->
 		Groups.find({slug: slug}))
 
+	Meteor.methods({
+		'addGroup': (name) ->
+			slug = URLify2(name)
+			g = Groups.findOne({slug: slug})
+
+			if(!g)
+				id = Groups.insert({
+					name: name,
+					ownerId: @userId || Meteor.userId()
+					slug: slug
+				})
+				g = Groups.findOne(id)
+
+			g
+	})
+
 
 Meteor.startup(() ->
   if (Meteor.isServer)
