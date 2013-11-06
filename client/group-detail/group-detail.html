@@ -1,5 +1,6 @@
 <template name="group_detail">
 	<div class="ballot col-md-3">
+	{{#if currentUser}}
 		<h2>I Vote For:</h2>
 		<form>
 			<label>Restaurant:</label>
@@ -8,11 +9,19 @@
 		</form>
 
 		<h2>Recent Votes</h2>
+	{{else}}
+		<h3>To Vote Please Login</h3>
+	{{/if}}
 	</div>
 	<div class="votes col-md-9">
-		<ul>
-		{{#each votes}}
-			<li>{{restaurant}} - {{name}}</li>
+		{{#each grouped_votes}}
+		<div class="group">
+			<h3>{{name}} ({{votes.length}})</h3>
+			<ul>
+			{{#each votes}}
+				<li>{{name}}</li>
+			{{/each}}
+		</div>
 		{{/each}}
-		</ul>
+	</div>
 </template>

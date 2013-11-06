@@ -22,8 +22,8 @@ Router.map(() ->
     template: 'group_detail',
     data: () ->
       { 
-        group: Groups.findOne({slug: @params._slug}),
-        votes: Votes.find().fetch()
+        group: Groups.findOne({slug: @params._slug})
+        #votes: Votes.find().fetch()
       }
   })
 
