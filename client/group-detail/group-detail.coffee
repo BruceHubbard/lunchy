@@ -7,6 +7,9 @@ Template.group_detail.events({
 		Meteor.call('vote', Session.get('slug'), restInput.value, (err, result) ->
 			console.log("Voted")
 		)
+
+	'click .recent a': (e, t) ->
+		Meteor.call('vote', Session.get('slug'), @.toString())
 })
 
 Template.group_detail.grouped_votes = () ->

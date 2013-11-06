@@ -9,9 +9,9 @@
 		</form>
 
 		<h2>Recent Votes</h2>
-		<ul>
+		<ul class="recent">
 		{{#each myVotes}}
-			<li>{{.}}
+			<li><a href="#">{{.}}</a></li>
 		{{/each}}
 		</ul>	
 	{{else}}
