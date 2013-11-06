@@ -29,10 +29,10 @@ cutoffTime = () ->
 	else
 		[]
 @Votes.currentVotes = () ->
-	Votes.find({voted: {$gte: cutoffTime()}})
+	Votes.find({active: true, voted: {$gte: cutoffTime()}})
 	
 @Votes.currentInGroup = (groupId) ->
-	Votes.find({group: groupId, voted: {$gte: cutoffTime()}})
+	Votes.find({group: groupId, active: true, voted: {$gte: cutoffTime()}})
 
 if(Meteor.isServer)
 	Meteor.publish("myGroups", @Groups.recent)
@@ -71,17 +71,16 @@ if(Meteor.isServer)
 
 			if(existing)
 				Votes.update(existing._id, {
-					$set: {
-						restaurant: restaurant, 
-						voted: new Date()}
-					})
-			else
-				Votes.insert({
-					group: g._id,
-					user: @userId || Meteor.userId(),
-					name: Meteor.user().emails[0].address,
-					voted: new Date(),
-					restaurant: restaurant})
+					$set: { active: false }
+				})
+
+			Votes.insert({
+				group: g._id,
+				active: true,
+				user: @userId || Meteor.userId(),
+				name: Meteor.user().emails[0].address,
+				voted: new Date(),
+				restaurant: restaurant})
 	})
 
 
@@ -97,13 +96,13 @@ Meteor.startup(() ->
 
     @Votes.remove({})
 
-    @Votes.insert({group: t2, user: 'xpHzsG6BdYaEuRnZN', restaurant: "Benihana's", name: "mockData@meteor.com", voted: new Date()})
+    @Votes.insert({group: t2, active: true, user: 'xpHzsG6BdYaEuRnZN', restaurant: "Benihana's", name: "mockData@meteor.com", voted: new Date()})
 
-    @Votes.insert({group: t2, user: 'xpHzsG6BdYaEuRnZN', restaurant: "Boston Stoker", name: "Sheryl", voted: new Date(2013, 6, 3)})
+    @Votes.insert({group: t2, active: true, user: 'xpHzsG6BdYaEuRnZN', restaurant: "Boston Stoker", name: "Sheryl", voted: new Date(2013, 6, 3)})
 
-    @Votes.insert({group: t2, user: '4JNjn9WKmkDrL8bjM', restaurant: "Chipotle", name: "brucehubbard@gmail.com", voted: new Date(2013, 6, 3)})
+    @Votes.insert({group: t2, active: true, user: '4JNjn9WKmkDrL8bjM', restaurant: "Chipotle", name: "brucehubbard@gmail.com", voted: new Date(2013, 6, 3)})
 
-    @Votes.insert({group: t1, user: '4JNjn9WKmkDrL8bjM', restaurant: "Chipotle", name: "brucehubbard@gmail.com", voted: new Date(2013, 6, 3)})
+    @Votes.insert({group: t1, active: true, user: '4JNjn9WKmkDrL8bjM', restaurant: "Chipotle", name: "brucehubbard@gmail.com", voted: new Date(2013, 6, 3)})
 )
 
 ###
