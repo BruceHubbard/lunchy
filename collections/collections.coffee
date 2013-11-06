@@ -6,7 +6,10 @@
 @Votes = new Meteor.Collection("Votes")
 @Votes.myVotes = () ->
 	if(Meteor.userId)
-		Votes.find({user: @userId || Meteor.userId()})
+		votes = Votes.find({user: @userId || Meteor.userId()}).fetch()
+		if(votes)
+			console.log("votes", votes)
+			_.uniq(_.pluck(votes, 'restaurant'))
 
 if(Meteor.isServer)
 	Meteor.publish("myRooms", @Groups.recent)
@@ -21,7 +24,7 @@ if(Meteor.isServer)
 		Votes.find({group: g._id, voted: {$gte: cutoff}})
 	)
 
-	#Meteor.publish("myVotes", @Votes.myVotes)
+	Meteor.publish("myVotes", @Votes.myVotes)
 
 	Meteor.methods({
 		'addGroup': (name) ->
@@ -57,6 +60,8 @@ Meteor.startup(() ->
     t2 = @Groups.insert({name: 'test2', ownerId: '4JNjn9WKmkDrL8bjM', slug: 'test2'})
     t1 = @Groups.insert({name: 'test1', ownerId: null, slug: 'test1'})
     t3 = @Groups.insert({name: 'test3', ownerId: '4JNjn9WKmkDrL8bjM', slug: 'test3'})
+
+    @Votes.remove({})
 
     @Votes.insert({group: t2, user: null, restaurant: "Benihana's", name: "mockData@meteor.com", voted: new Date()})
     @Votes.insert({group: t2, user: null, restaurant: "Boston Stoker", name: "Sheryl", voted: new Date(2013, 6, 3)})

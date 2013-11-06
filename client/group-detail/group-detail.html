@@ -9,6 +9,11 @@
 		</form>
 
 		<h2>Recent Votes</h2>
+		<ul>
+		{{#each myVotes}}
+			<li>{{.}}
+		{{/each}}
+		</ul>	
 	{{else}}
 		<h3>To Vote Please Login</h3>
 	{{/if}}
