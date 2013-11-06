@@ -67,7 +67,7 @@ if(Meteor.isServer)
 
 		'vote': (group, restaurant) ->
 			g = Groups.findOne({slug: group})
-			existing = Votes.findOne({group: g._id, user: @userId, voted: {$gte: cutoffTime()}})
+			existing = Votes.findOne({group: g._id, active: true, user: @userId, voted: {$gte: cutoffTime()}})
 
 			if(existing)
 				Votes.update(existing._id, {
