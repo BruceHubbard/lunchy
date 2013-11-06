@@ -10,7 +10,8 @@ Template.group_detail.events({
 })
 
 Template.group_detail.grouped_votes = () ->
-	grouped = _.groupBy(Votes.find().fetch(), 'restaurant')
+	
+	grouped = _.groupBy(Votes.currentVotes().fetch(), 'restaurant')
 
 	if(grouped)
 		bySize = []
@@ -38,7 +39,5 @@ Template.group_detail.created = () ->
 				rest.votes.length
 			).reverse()
 
-			console.log("bySize: ", bySize)
-			
 			#boxes = d3.select('.votes .box').data(bySize, (d) -> d.restaurant)
 	)

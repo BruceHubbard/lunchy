@@ -6,28 +6,49 @@ cutoffTime = () ->
 @Groups = new Meteor.Collection("Groups")
 @Groups.recent = () ->
 	if(Meteor.userId)
-		Groups.find({ownerId: @userId || Meteor.userId()})
+		votes = Votes.myVotes(@userId)
+
+		if(votes.fetch)
+			votes = votes.fetch()
+
+		votedIn = _.pluck(votes, 'group')
+		Groups.find({ $or: [
+			{ownerId: @userId},
+			{_id: {$in: votedIn}}]})
+
 
 @Votes = new Meteor.Collection("Votes")
-@Votes.myVotes = () ->
-	if(Meteor.userId)
-		votes = Votes.find({user: @userId || Meteor.userId()}).fetch()
-		if(votes)
-			console.log("votes", votes)
-			_.uniq(_.pluck(votes, 'restaurant'))
+@Votes.myVotes = (userId) ->
+	if(userId)
+		Votes.find({user: userId})
+	else
+		[]
+@Votes.myVotesInGroup = (groupId, userId) ->
+	if(userId)
+		Votes.find({group: groupId, user: userId})
+	else
+		[]
+@Votes.currentVotes = () ->
+	Votes.find({voted: {$gte: cutoffTime()}})
+	
+@Votes.currentInGroup = (groupId) ->
+	Votes.find({group: groupId, voted: {$gte: cutoffTime()}})
 
 if(Meteor.isServer)
-	Meteor.publish("myRooms", @Groups.recent)
+	Meteor.publish("myGroups", @Groups.recent)
 	Meteor.publish("selectedRoom", (slug) ->
 		Groups.find({slug: slug}))
-	Meteor.publish("votes", (slug) ->
+	Meteor.publish("groupVotes", (slug) ->
 		g = Groups.findOne({slug: slug})
-		now = new Date()
-
-		Votes.find({group: g._id, voted: {$gte: cutoffTime()}})
+		Votes.currentInGroup(g._id)
 	)
 
-	Meteor.publish("myVotes", @Votes.myVotes)
+	Meteor.publish("myVotes", (slug) ->
+		if(slug)
+			g = Groups.findOne({slug: slug})
+
+			Votes.myVotesInGroup(g._id, @userId)
+	)
 
 	Meteor.methods({
 		'addGroup': (name) ->
@@ -69,14 +90,20 @@ Meteor.startup(() ->
     @Groups.remove({})
 
     t2 = @Groups.insert({name: 'test2', ownerId: '4JNjn9WKmkDrL8bjM', slug: 'test2'})
-    t1 = @Groups.insert({name: 'test1', ownerId: null, slug: 'test1'})
+
+    t1 = @Groups.insert({name: 'test1', ownerId: 'xpHzsG6BdYaEuRnZN', slug: 'test1'})
+
     t3 = @Groups.insert({name: 'test3', ownerId: '4JNjn9WKmkDrL8bjM', slug: 'test3'})
 
     @Votes.remove({})
 
-    @Votes.insert({group: t2, user: null, restaurant: "Benihana's", name: "mockData@meteor.com", voted: new Date()})
-    @Votes.insert({group: t2, user: null, restaurant: "Boston Stoker", name: "Sheryl", voted: new Date(2013, 6, 3)})
+    @Votes.insert({group: t2, user: 'xpHzsG6BdYaEuRnZN', restaurant: "Benihana's", name: "mockData@meteor.com", voted: new Date()})
+
+    @Votes.insert({group: t2, user: 'xpHzsG6BdYaEuRnZN', restaurant: "Boston Stoker", name: "Sheryl", voted: new Date(2013, 6, 3)})
+
     @Votes.insert({group: t2, user: '4JNjn9WKmkDrL8bjM', restaurant: "Chipotle", name: "brucehubbard@gmail.com", voted: new Date(2013, 6, 3)})
+
+    @Votes.insert({group: t1, user: '4JNjn9WKmkDrL8bjM', restaurant: "Chipotle", name: "brucehubbard@gmail.com", voted: new Date(2013, 6, 3)})
 )
 
 ###
