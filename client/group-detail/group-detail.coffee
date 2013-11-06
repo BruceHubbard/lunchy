@@ -8,8 +8,13 @@ Template.group_detail.events({
 			console.log("Voted")
 		)
 
-	'click .recent a': (e, t) ->
+	'click .recent a': (e) ->
+		e.preventDefault()
 		Meteor.call('vote', Session.get('slug'), @.toString())
+
+	'click .group h3': (e) ->
+		e.preventDefault()
+		Meteor.call('vote', Session.get('slug'), @.name)
 })
 
 Template.group_detail.grouped_votes = () ->
