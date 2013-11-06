@@ -1,3 +1,8 @@
+cutoffTime = () ->
+	cutoff = new Date()
+	cutoff.setHours(cutoff.getHours() - 5)
+	cutoff
+
 @Groups = new Meteor.Collection("Groups")
 @Groups.recent = () ->
 	if(Meteor.userId)
@@ -18,10 +23,8 @@ if(Meteor.isServer)
 	Meteor.publish("votes", (slug) ->
 		g = Groups.findOne({slug: slug})
 		now = new Date()
-		cutoff = new Date()
-		cutoff.setHours(cutoff.getHours() - 5)
 
-		Votes.find({group: g._id, voted: {$gte: cutoff}})
+		Votes.find({group: g._id, voted: {$gte: cutoffTime()}})
 	)
 
 	Meteor.publish("myVotes", @Votes.myVotes)
@@ -43,13 +46,21 @@ if(Meteor.isServer)
 
 		'vote': (group, restaurant) ->
 			g = Groups.findOne({slug: group})
+			existing = Votes.findOne({group: g._id, user: @userId, voted: {$gte: cutoffTime()}})
 
-			Votes.insert({
-				group: g._id,
-				user: @userId || Meteor.userId(),
-				name: Meteor.user().emails[0].address,
-				voted: new Date(),
-				restaurant: restaurant})
+			if(existing)
+				Votes.update(existing._id, {
+					$set: {
+						restaurant: restaurant, 
+						voted: new Date()}
+					})
+			else
+				Votes.insert({
+					group: g._id,
+					user: @userId || Meteor.userId(),
+					name: Meteor.user().emails[0].address,
+					voted: new Date(),
+					restaurant: restaurant})
 	})
 
 
