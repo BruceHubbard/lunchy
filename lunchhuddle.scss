@@ -1,7 +1,7 @@
 /* CSS declarations go here */
 .votes {
 	.group {
-		width: 31%;
+		width: 47%;
 		display: inline-block;
 		background-color: gainsboro;
 		border-radius: 15px;
@@ -12,6 +12,37 @@
 		h3 {
 			cursor: pointer;
 		}
+	}
+}
+
+.messages {
+	position: fixed;
+	top: 72px;
+	right: 70px;
+	bottom: 0;
+	overflow: auto;
+	padding-top: 35px;
+
+	ul {
+		list-style: none;
+		padding: 0;
+
+		li {
+			border-bottom: 1px black solid;
+			margin-bottom: 10px;
+		}
+
+		.user { font-size: smaller; }
+		.msg { font-size: large; text-align: right;}
+	}
+
+	form {
+		position: absolute;
+		top: 0px;
+		width: 100%;
+		background-color: white;
+
+		input.message { width: 200px; }
 	}
 }
 

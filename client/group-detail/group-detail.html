@@ -17,7 +17,7 @@
 		<h3>To Vote Please Login</h3>
 	{{/if}}
 	</div>
-	<div class="votes col-md-9">
+	<div class="votes col-md-6">
 		{{#each grouped_votes}}
 		<div class="group">
 			<h3>{{name}} ({{votes.length}})</h3>
@@ -28,4 +28,8 @@
 		</div>
 		{{/each}}
 	</div>
+	<div class="messages col-md-3">
+		{{> messages}}
+	</div>
+
 </template>

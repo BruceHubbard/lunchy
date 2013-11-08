@@ -20,6 +20,7 @@ Router.map(() ->
       this.subscribe('selectedRoom', Session.get('slug'))
       this.subscribe('groupVotes', Session.get('slug'))
       this.subscribe('myVotes', Session.get('slug'))
+      this.subscribe('recentMessages', Session.get('slug'))
 
     template: 'group_detail',
     data: () ->
@@ -31,6 +32,7 @@ Router.map(() ->
             _.uniq(_.pluck(votes, 'restaurant'))
           else 
             []
+        messages: Messages.find({}, {sort: {posted: -1}}).fetch()
       }
   })
 

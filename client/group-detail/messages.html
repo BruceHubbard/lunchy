@@ -1,0 +1,15 @@
+<template name="messages">
+	<ul>
+	{{#each messages}}
+		<li>
+			<div class="user">{{name}}</div>
+			<div class="msg">{{message}}</div>
+		</li>
+	{{/each}}
+	</ul>
+	<form class="input">
+		<input class="message"/>
+		<input type="submit"/>
+	</form>
+
+</template>
