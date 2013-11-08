@@ -75,7 +75,7 @@ if(Meteor.isServer)
 				group: g._id,
 				active: true,
 				user: @userId || Meteor.userId(),
-				name: Meteor.user().emails[0].address,
+				name: Meteor.user().username,
 				voted: new Date(),
 				restaurant: restaurant})
 	})
