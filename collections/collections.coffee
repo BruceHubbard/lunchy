@@ -80,28 +80,6 @@ if(Meteor.isServer)
 				restaurant: restaurant})
 	})
 
-
-Meteor.startup(() ->
-  if (Meteor.isServer)
-    @Groups.remove({})
-
-    t2 = @Groups.insert({name: 'test2', ownerId: '4JNjn9WKmkDrL8bjM', slug: 'test2'})
-
-    t1 = @Groups.insert({name: 'test1', ownerId: 'xpHzsG6BdYaEuRnZN', slug: 'test1'})
-
-    t3 = @Groups.insert({name: 'test3', ownerId: '4JNjn9WKmkDrL8bjM', slug: 'test3'})
-
-    @Votes.remove({})
-
-    @Votes.insert({group: t2, active: true, user: 'xpHzsG6BdYaEuRnZN', restaurant: "Benihana's", name: "mockData@meteor.com", voted: new Date()})
-
-    @Votes.insert({group: t2, active: true, user: 'xpHzsG6BdYaEuRnZN', restaurant: "Boston Stoker", name: "Sheryl", voted: new Date(2013, 6, 3)})
-
-    @Votes.insert({group: t2, active: true, user: '4JNjn9WKmkDrL8bjM', restaurant: "Chipotle", name: "brucehubbard@gmail.com", voted: new Date(2013, 6, 3)})
-
-    @Votes.insert({group: t1, active: true, user: '4JNjn9WKmkDrL8bjM', restaurant: "Chipotle", name: "brucehubbard@gmail.com", voted: new Date(2013, 6, 3)})
-)
-
 ###
 
 Groups
