@@ -1,10 +1,12 @@
 <template name="recent">
-{{#if recent}}
+{{#if currentUser}}
 	<h1>Recent Groups</h1>
 	<ul class="groups">
 	{{#each recent}}
 		<li><a href="/g/{{name}}">{{name}}</a></li>
 	{{/each}}
 	</ul>
+{{else}}
+	Login to view your recent groups
 {{/if}}
 </template>
