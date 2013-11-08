@@ -12,9 +12,7 @@ cutoffTime = () ->
 			votes = votes.fetch()
 
 		votedIn = _.pluck(votes, 'group')
-		Groups.find({ $or: [
-			{ownerId: @userId},
-			{_id: {$in: votedIn}}]})
+		Groups.find({_id: {$in: votedIn}})
 
 
 @Votes = new Meteor.Collection("Votes")
@@ -58,7 +56,6 @@ if(Meteor.isServer)
 			if(!g)
 				id = Groups.insert({
 					name: name,
-					ownerId: @userId || Meteor.userId()
 					slug: slug
 				})
 				g = Groups.findOne(id)
