@@ -14,7 +14,7 @@ if(Meteor.isServer)
 			Messages.insert({
 				group: groupSlug,
 				user: @userId,
-				name: Meteor.user().emails[0].address,
+				name: Meteor.user().username,
 				posted: new Date(),
 				message: message})
 	})
