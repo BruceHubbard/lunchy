@@ -3,7 +3,7 @@
 	<h1>Recent Groups</h1>
 	<ul class="groups">
 	{{#each recent}}
-		<li><a href="/g/{{name}}">{{name}}</a></li>
+		<li><a href="/g/{{.}}">{{.}}</a></li>
 	{{/each}}
 	</ul>
 {{else}}

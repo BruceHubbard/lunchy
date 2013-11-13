@@ -1,4 +1,5 @@
 Meteor.subscribe('myGroups')
+Meteor.subscribe('myVotes')
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL'
@@ -13,7 +14,11 @@ Router.map(() ->
     path: '/',
     template: 'home',
     data: () ->
-      {recent: Groups.find().fetch()}
+      {
+        recent: () ->
+          votes = Votes.find({user: Meteor.userId()}).fetch()
+          _.uniq(_.pluck(votes, 'group'))
+      }
   })
 
   @route('detail', {
@@ -21,17 +26,17 @@ Router.map(() ->
     load: () -> 
       Session.set("slug", @params._slug)
     before: () ->
-      this.subscribe('selectedRoom', Session.get('slug'))
       this.subscribe('groupVotes', Session.get('slug'))
-      this.subscribe('myVotes', Session.get('slug'))
       this.subscribe('recentMessages', Session.get('slug'))
 
     template: 'group_detail',
     data: () ->
       { 
-        group: Groups.findOne({slug: @params._slug}),
         myVotes: () ->
-          votes = Votes.myVotes(Meteor.userId()).fetch()
+          votes = Votes.find({
+            user: Meteor.userId(),
+            group: Session.get('slug')
+          }).fetch()
           if votes
             _.uniq(_.pluck(votes, 'restaurant'))
           else 

@@ -3,68 +3,36 @@ cutoffTime = () ->
 	cutoff.setHours(cutoff.getHours() - 5)
 	cutoff
 
-@Groups = new Meteor.Collection("Groups")
-@Groups.recent = () ->
-	if(Meteor.userId)
-		votes = Votes.myVotes(@userId)
-
-		if(votes.fetch)
-			votes = votes.fetch()
-
-		votedIn = _.pluck(votes, 'group')
-		Groups.find({_id: {$in: votedIn}})
-
-
 @Votes = new Meteor.Collection("Votes")
 @Votes.myVotes = (userId) ->
 	if(userId)
 		Votes.find({user: userId})
 	else
 		[]
-@Votes.myVotesInGroup = (groupId, userId) ->
+@Votes.myVotesInGroup = (groupSlug, userId) ->
 	if(userId)
-		Votes.find({group: groupId, user: userId})
+		Votes.find({group: groupSlug, user: userId})
 	else
 		[]
-@Votes.currentVotes = () ->
-	Votes.find({active: true, voted: {$gte: cutoffTime()}})
+@Votes.currentVotes = (slug) ->
+	Votes.find({active: true, group: slug, voted: {$gte: cutoffTime()}})
 	
 @Votes.currentInGroup = (groupId) ->
 	Votes.find({group: groupId, active: true, voted: {$gte: cutoffTime()}})
 
 if(Meteor.isServer)
-	Meteor.publish("myGroups", @Groups.recent)
-	Meteor.publish("selectedRoom", (slug) ->
-		Groups.find({slug: slug}))
 	Meteor.publish("groupVotes", (slug) ->
-		g = Groups.findOne({slug: slug})
-		Votes.currentInGroup(g._id)
+		Votes.currentInGroup(slug)
 	)
 
-	Meteor.publish("myVotes", (slug) ->
-		if(slug)
-			g = Groups.findOne({slug: slug})
-
-			Votes.myVotesInGroup(g._id, @userId)
+	Meteor.publish("myVotes", () ->
+		if(Meteor.userId)
+			Votes.myVotes(@userId)
 	)
 
 	Meteor.methods({
-		'addGroup': (name) ->
-			slug = URLify2(name)
-			g = Groups.findOne({slug: slug})
-
-			if(!g)
-				id = Groups.insert({
-					name: name,
-					slug: slug
-				})
-				g = Groups.findOne(id)
-
-			g
-
 		'vote': (group, restaurant) ->
-			g = Groups.findOne({slug: group})
-			existing = Votes.findOne({group: g._id, active: true, user: @userId, voted: {$gte: cutoffTime()}})
+			existing = Votes.findOne({group: group, active: true, user: @userId, voted: {$gte: cutoffTime()}})
 
 			if(existing)
 				Votes.update(existing._id, {
@@ -72,7 +40,7 @@ if(Meteor.isServer)
 				})
 
 			Votes.insert({
-				group: g._id,
+				group: group,
 				active: true,
 				user: @userId || Meteor.userId(),
 				name: Meteor.user().username,

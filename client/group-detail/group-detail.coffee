@@ -19,7 +19,7 @@ Template.group_detail.events({
 
 Template.group_detail.grouped_votes = () ->
 	
-	grouped = _.groupBy(Votes.currentVotes().fetch(), 'restaurant')
+	grouped = _.groupBy(Votes.currentVotes(Session.get('slug')).fetch(), 'restaurant')
 
 	if(grouped)
 		bySize = []
