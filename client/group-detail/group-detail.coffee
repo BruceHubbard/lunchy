@@ -31,9 +31,19 @@ Template.group_detail.grouped_votes = () ->
 			rest.votes.length
 		).reverse()
 
+onLogin = () ->
+	Deps.autorun(() ->
+		if Meteor.userId()
+			Meteor.users.update(
+				{_id:Meteor.user()._id}, 
+				{$set:{"profile.lastRoom":Session.get('slug')}}
+			)
+	)
 
 Template.group_detail.created = () ->
 	self = @
+
+	onLogin()
 
 	geoSuccess = (p) ->
 		console.log("success", p)
@@ -50,18 +60,6 @@ Template.group_detail.created = () ->
 	else
 		Session.set("can-geo", false)
 
-	Deps.autorun(() ->
-		grouped = _.groupBy(Votes.find().fetch(), 'restaurant')
 
-		if(grouped)
-			bySize = []
 
-			for restaurant, votes of grouped
-				bySize.push({name: restaurant, votes: votes})
 
-			bySize = _.sortBy(bySize, (rest) ->
-				rest.votes.length
-			).reverse()
-
-			#boxes = d3.select('.votes .box').data(bySize, (d) -> d.restaurant)
-	)
