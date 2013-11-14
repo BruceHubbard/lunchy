@@ -34,6 +34,22 @@ Template.group_detail.grouped_votes = () ->
 
 Template.group_detail.created = () ->
 	self = @
+
+	geoSuccess = (p) ->
+		console.log("success", p)
+		Session.set("can-geo", true)
+		Session.set('location', p)
+
+	geoFail = (p) ->
+		console.log("failure", p)
+		Session.set('can-geo', false)
+		Session.set('location', null)
+
+	if(geoPosition.init())
+		geoPosition.getCurrentPosition(geoSuccess, geoFail, {enableHighAccuracy:true})
+	else
+		Session.set("can-geo", false)
+
 	Deps.autorun(() ->
 		grouped = _.groupBy(Votes.find().fetch(), 'restaurant')
 
