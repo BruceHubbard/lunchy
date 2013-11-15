@@ -25,6 +25,10 @@ if(Meteor.isServer)
 		Votes.currentInGroup(slug)
 	)
 
+	Meteor.publish("peopleInGroup", (slug) ->
+		Meteor.users.find { "profile.online": true, "profile.lastRoom": slug }
+	)
+
 	Meteor.publish("myVotes", () ->
 		if(Meteor.userId)
 			Votes.myVotes(@userId)

@@ -1,35 +1,44 @@
 <template name="group_detail">
-	<div class="ballot col-md-3">
-	{{#if currentUser}}
-		<h2>I Vote For:</h2>
-		<form>
-			<input class="restaurant"/>
-			<input type="submit" value="VOTE"/>
-		</form>
+	<div class="detail">
+		<div class="ballot col-md-3">
+		{{#if currentUser}}
+			<h2>I Vote For:</h2>
+			<form>
+				<input class="restaurant"/>
+				<input type="submit" value="VOTE"/>
+			</form>
 
-		<h2>Recent Votes</h2>
-		<ul class="recent">
-		{{#each myVotes}}
-			<li><a href="#">{{.}}</a></li>
-		{{/each}}
-		</ul>	
-	{{else}}
-		<h3>To Vote Please Login</h3>
-	{{/if}}
-	</div>
-	<div class="votes col-md-6">
-		{{#each grouped_votes}}
-		<div class="group">
-			<h3>{{name}} ({{votes.length}})</h3>
-			<ul>
-			{{#each votes}}
-				<li>{{name}}</li>
+			<h2>Recent Votes</h2>
+			<ul class="recent">
+			{{#each myVotes}}
+				<li><a href="#">{{.}}</a></li>
+			{{/each}}
+			</ul>	
+		{{else}}
+			<h3>To Vote Please Login</h3>
+		{{/if}}
+		</div>
+		<div class="votes col-md-6">
+			{{#each grouped_votes}}
+			<div class="group">
+				<h3>{{name}} ({{votes.length}})</h3>
+				<ul>
+				{{#each votes}}
+					<li>{{name}}</li>
+				{{/each}}
+			</div>
 			{{/each}}
 		</div>
-		{{/each}}
+		<div class="messages col-md-3">
+			{{> messages}}
+		</div>
+		<div class="online">
+			<h4>Online</h4>
+			{{#each people}}
+				<span class="label label-primary">{{username}}</span>
+			{{/each}}
+		</div>
 	</div>
-	<div class="messages col-md-3">
-		{{> messages}}
-	</div>
+
 
 </template>

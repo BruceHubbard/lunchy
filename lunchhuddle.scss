@@ -1,4 +1,8 @@
 /* CSS declarations go here */
+html, body {
+	height: 100%;
+}
+
 .votes {
 	.group {
 		width: 47%;
@@ -15,17 +19,34 @@
 	}
 }
 
+body > div.container {
+	height: 100%;
+}
+
+.detail {
+	position: relative;
+
+	.online {
+		position: fixed;
+		bottom: 0;
+		width: 50%;
+		left: 25%;
+		max-height: 70px;
+		text-align: center;
+		overflow: auto;
+	}
+}
+
 .messages {
-	position: fixed;
-	top: 72px;
-	right: 70px;
-	bottom: 0;
-	overflow: auto;
 	padding-top: 35px;
+	position: relative;
 
 	ul {
 		list-style: none;
 		padding: 0;
+		height: 280px;
+		overflow: auto;
+
 
 		li {
 			border-bottom: 1px black solid;

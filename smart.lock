@@ -7,7 +7,8 @@
       "urlify2": {},
       "d3js-package": {},
       "d3graph": {},
-      "scss": {}
+      "scss": {},
+      "user-status": {}
     },
     "packages": {
       "iron-router": {
@@ -17,8 +18,8 @@
       },
       "bootstrap-3": {
         "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
-        "tag": "v0.3.5",
-        "commit": "47996f67f3987c9f82117394effcbe1586a4fe29"
+        "tag": "v0.3.6",
+        "commit": "711dbcabe333c8714298b2fd1de97fdcdae6efa7"
       },
       "urlify2": {
         "git": "https://github.com/peerlibrary/meteor-urlify2.git",
@@ -32,13 +33,18 @@
       },
       "d3graph": {
         "git": "https://github.com/Futurescaper/meteor-d3graph.git",
-        "tag": "v0.1.92",
-        "commit": "757b57282e7daebe3d32c6170ff21db050133848"
+        "tag": "v0.1.97",
+        "commit": "a408209d780e52e17855c8e24f5aa22dd1513400"
       },
       "scss": {
         "git": "https://github.com/fourseven/meteor-scss.git",
         "tag": "v0.6.4.1",
         "commit": "bf203edb83565943cc0c00a31d536de7094f312b"
+      },
+      "user-status": {
+        "git": "https://github.com/mizzao/meteor-user-status.git",
+        "tag": "v0.1.5",
+        "commit": "0169a468e57155f1d61fc2b1cd76bc9ca51c7313"
       }
     }
   }

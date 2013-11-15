@@ -28,6 +28,7 @@ Router.map(() ->
     before: () ->
       this.subscribe('groupVotes', Session.get('slug'))
       this.subscribe('recentMessages', Session.get('slug'))
+      this.subscribe('peopleInGroup', Session.get('slug'))
 
     template: 'group_detail',
     data: () ->
@@ -41,7 +42,8 @@ Router.map(() ->
             _.uniq(_.pluck(votes, 'restaurant'))
           else 
             []
-        messages: Messages.find({}, {sort: {posted: -1}}).fetch()
+        messages: Messages.find({}, {sort: {posted: -1}}).fetch(),
+        people: Meteor.users.find().fetch()
       }
   })
 
