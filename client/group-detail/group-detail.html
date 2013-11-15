@@ -33,10 +33,14 @@
 			{{> messages}}
 		</div>
 		<div class="online">
-			<h4>Online</h4>
-			{{#each people}}
-				<span class="label label-primary">{{username}}</span>
-			{{/each}}
+			{{#if people}}
+				<h4>Online</h4>
+				{{#each people}}
+					<span class="label label-primary">{{username}}</span>
+				{{/each}}
+			{{else}}
+				<h4>No One Is Online</h4>
+			{{/if}}
 		</div>
 	</div>
 
